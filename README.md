@@ -5,6 +5,8 @@ Version 1.0 2023/09
 
 A simple game of Sudoku or alike for the AGON Light
 
+It works with the Emulator or the real thing, VDP/MOS 1.03/1.03 and 1.04RC1/1.04RC1
+
 ###  Intent
 
 I have being willing to write a backtracking algo for sudoku forever, and since
