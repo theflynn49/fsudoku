@@ -1,0 +1,5 @@
+#!/bin/bash
+# z80asm -I=/home/flynn/z88dk/lib mos.asm
+# zcc +agon -vn --opt-code-speed fsudoku.c -l mos.o -o fsudoku.bin
+zcc +agon -vn --opt-code-speed fsudoku.c main.c -o fsudoku.bin
+cp fsudoku.bin ~/agon-light-emulator/sdcard/
