@@ -16,7 +16,7 @@ So here is a dirty written-at-a-tube little thing which I guarantee contains not
 good programming practice, meaning expect ugly menues, a lot of ~~bugs~~ strange features, 
 and barely no comments in the code. 
 
-It is a text game,  written in "C" using z88dk (https://z88dk.org) producing ADL=0 type code.
+It is a text game (video mode 1), written in "C" using z88dk (https://z88dk.org) producing ADL=0 type code.
 You should use a recent "night build" version, greater than 2.2, to get Agon support 
 (Mine is a daily build dated 2023/08/08)
 

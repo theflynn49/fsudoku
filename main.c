@@ -2,7 +2,8 @@
 #include <stdio.h>
 #include <string.h>
 
-#define VERSION " Version 1.0 2023/09   "
+#define TGT_VERSION " Version 1.1 2023/09   "
+#define VERSION     " Version 1.1RC1 23/09  "
 
 extern int generate_puzzle() ;
 extern int solve(int findall, int savefirst, int limit) ;
@@ -78,7 +79,7 @@ char *patterns[] =
 	"001001001"
 } ;
 
-#define max_stack 40
+#define max_stack 41
 int undo_stack_ptr, max_stack_ptr, min_stack_ptr ;
 int undo_stack[81*max_stack] ;
 
@@ -918,16 +919,17 @@ int mainloop()
 	  case 0x15 : if (++curPosX>=9) curPosX=0; setCursor() ; break ;
 	  case 0x08 : if (--curPosX<0) curPosX=8; setCursor() ;  break ;
 	  case 0x7F : 
-		      if (undo_stack_ptr==max_stack_ptr) 
-			      if (undo_stack_ptr==0) undo_stack_ptr=max_stack-1 ; else undo_stack_ptr-- ;
+		      if (undo_stack_ptr==max_stack_ptr) // top of the stack => SP-=2
+		         if (undo_stack_ptr==0) undo_stack_ptr=max_stack-1 ; else undo_stack_ptr-- ;
 		      if (undo_stack_ptr!=min_stack_ptr) // UNDO=bs
 		      {
 			      if (undo_stack_ptr==0) undo_stack_ptr=max_stack-1 ; else 
 			        undo_stack_ptr-- ;
 			      memcpy(grid, undo_stack+undo_stack_ptr*sizeof(grid), sizeof(grid)) ;
 			      drawgrid(grid) ;
+			      countDigits(grid) ;
 		      } ; break ;
-	  case 0x09 : if (undo_stack_ptr<max_stack_ptr) { // REDO=tab
+	  case 0x09 : if (undo_stack_ptr!=max_stack_ptr) { // REDO=tab
 			        undo_stack_ptr++ ;
 			        if (undo_stack_ptr>=max_stack) undo_stack_ptr=0 ;
 			        if (undo_stack_ptr==min_stack_ptr) {
@@ -936,6 +938,7 @@ int mainloop()
 			        }
 			      memcpy(grid, undo_stack+undo_stack_ptr*sizeof(grid), sizeof(grid)) ;
 			      drawgrid(grid) ;
+			      countDigits(grid) ;
 			      val = undo_stack_ptr+1 ;
 			      if (val==max_stack) val=0 ;
 			      if (val==max_stack_ptr) // reach the top ?
@@ -970,6 +973,7 @@ int mainloop()
 		  grid[curPosX+9*curPosY] = val ;
 		  memcpy(undo_stack+undo_stack_ptr*sizeof(grid), grid, sizeof(grid)) ;
 		  undo_stack_ptr++ ;
+		  if (undo_stack_ptr>=max_stack) undo_stack_ptr=0 ;
 		  max_stack_ptr=undo_stack_ptr ;
 		  if (undo_stack_ptr==min_stack_ptr) {
 		    min_stack_ptr++ ;
