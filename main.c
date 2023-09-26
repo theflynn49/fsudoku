@@ -3,7 +3,7 @@
 #include <string.h>
 
 #define TGT_VERSION " Version 1.1 2023/09   "
-#define VERSION     " Version 1.1RC1 23/09  "
+#define VERSION     " Version 1.1RC2 23/09  "
 
 extern int generate_puzzle() ;
 extern int solve(int findall, int savefirst, int limit) ;
@@ -409,19 +409,20 @@ void drawEditMenu()
 	 tab(bias_X+4*9+1, bias_Y+3) ; printf(" -Edit Menu            ") ;
 	 tab(bias_X+4*9+1, bias_Y+5) ; printf("arrows: move cursor    ") ;
 	 tab(bias_X+4*9+1, bias_Y+6) ; printf("1-9   : set a cell     ") ;
-	 tab(bias_X+4*9+1, bias_Y+7) ; printf(" 0    : reset a cell   ") ;
+	 tab(bias_X+4*9+1, bias_Y+7) ; printf("0,' ' : reset a cell   ") ;
 
 	 tab(bias_X+4*9+1, bias_Y+9) ; printf(" -Tools               ") ;
 	 tab(bias_X+4*9+1, bias_Y+11) ; printf("P     : hide/show notes") ;
-	 tab(bias_X+4*9+1, bias_Y+12) ; printf("T     : Test puzzle    ") ;
-	 tab(bias_X+4*9+1, bias_Y+13) ; printf("L     : Load puzzle    ") ;
-	 tab(bias_X+4*9+1, bias_Y+14) ; printf("S     : Save puzzle    ") ;
+	 tab(bias_X+4*9+1, bias_Y+12) ; printf("Z     : Clear puzzle   ") ;
+	 tab(bias_X+4*9+1, bias_Y+13) ; printf("T     : Test puzzle    ") ;
+	 tab(bias_X+4*9+1, bias_Y+14) ; printf("L     : Load puzzle    ") ;
+	 tab(bias_X+4*9+1, bias_Y+15) ; printf("S     : Save puzzle    ") ;
 
-	 tab(bias_X+4*9+1, bias_Y+16) ; printf(" -Misc.                ") ;
-	 tab(bias_X+4*9+1, bias_Y+18) ; printf("X     : return to Menu ") ;
-	 tab(bias_X+4*9+1, bias_Y+19) ; printf("/,+,- : change colors  ") ;
-	 tab(bias_X+4*9+1, bias_Y+20) ; printf("of item : ") ;
-	 pr_item(20) ; printf("    ") ;
+	 tab(bias_X+4*9+1, bias_Y+17) ; printf(" -Misc.                ") ;
+	 tab(bias_X+4*9+1, bias_Y+19) ; printf("X     : return to Menu ") ;
+	 tab(bias_X+4*9+1, bias_Y+20) ; printf("/,+,- : change colors  ") ;
+	 tab(bias_X+4*9+1, bias_Y+21) ; printf("of item : ") ;
+	 pr_item(21) ; printf("    ") ;
 }
 
 void drawMenu()
@@ -767,11 +768,15 @@ int mainEditloop()
 	{
 	  case '+' : increase(target) ; break ;
 	  case '-' : decrease(target) ; break ;
-	  case '/' : if (++target>10) target=0 ; pr_item(20) ; setCursor() ; break ;
+	  case '/' : if (++target>10) target=0 ; pr_item(21) ; setCursor() ; break ;
 	  case 'x' :
 	  case 'X' : error_type=0 ;
 		     for (i=0; i<81; ++i) if ((grid[i]&0x1F)==0) grid[i]=0 ; // reset notes
 		     return 0 ;
+	  case 'z' :
+	  case 'Z' : memset(grid, 0, sizeof(grid)) ; // reset all
+		     drawgrid(grid) ;
+		     break ;
 	  case 't' :
 	  case 'T' : explain=1 ; 
 		     printInfo("Solving this puzzle, please wait ...") ;
@@ -830,10 +835,10 @@ int mainEditloop()
 	  case 0x0B : if (--curPosY<0) curPosY=8; setCursor() ; break ;
 	  case 0x15 : if (++curPosX>=9) curPosX=0; setCursor() ; break ;
 	  case 0x08 : if (--curPosX<0) curPosX=8; setCursor() ;  break ;
-          default : if ((c>='0')&&(c<='9')) {
+          default : if (((c>='0')&&(c<='9'))||(c==' ')) { // allow space='0'
 	    if (mod & 0xC) { // Alt or Alt-Gr?
 	    } else {
-		if (c=='0') val=0 ; else val = c-'0' ;
+		if ((c=='0')||(c==' ')) val=0 ; else val = c-'0' ;
 		  for (i=0; i<81; ++i) 
 		      if ((grid[i]&0x10)==0) {
 			 grid[i] &= 0xFF80 ; // reset computed if any
@@ -845,13 +850,20 @@ int mainEditloop()
 		  if (tmp != last_errors) drawgrid(grid) ; 
 		  last_errors = tmp ;
 		  drawCell(grid, curPosX, curPosY) ;
+		  setCursor() ;
 		  countDigits(grid) ;
 		  reset_constraints(1) ; 
-		  drawNotes(grid) ;
+		  if (gener_in_process==0) drawNotes(grid) ;
+	          if (++curPosX>=9) { // move cursor one step right to easy puzzle dataentry
+		    curPosX=0; 
+	  	    if (++curPosY>=9) curPosY=0; 
+		  }
+		  setCursor() ;
 	    }	
 	  } else {
 		 // tab(30,43) ; color(15, 0x80) ; printf("key-mod=%02X-%02X  ", c, mod) ; 
 	  }
+ 	  break ;
 	}	     
 //	tab(30,44) ; color(7, 0x80) ; printf("target=%04X-%04X  ", target, r) ; setCursor() ;
 	return 1 ;
