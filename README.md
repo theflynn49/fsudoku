@@ -11,7 +11,10 @@ It works with
 - VDP/MOS 1.04RC1/1.04RC1 (on AgonLight2 from Olimex)
 - VDP/MOS 1.04RC1/1.04RC2 (id)
 
-It doesn't work yet on the fab-agon-emulator from tomm because problems with the emulator color palettes. 
+It doesn't work yet on 
+- the fab-agon-emulator from tomm 
+- VDP 1.04RC2 from tomm
+because problems with the color palettes of the new VDP. 
 
 ###  Intent
 
