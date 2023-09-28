@@ -13,7 +13,8 @@ It works with
 
 On these environments : 
 - the fab-agon-emulator from tomm 
-- VDP 1.04RC2 
+- VDP 1.04RC2
+
 You must enable the Legacy Modes with "VDU 23,0,&C1,1" because it uses the old modes the VDP. 
 
 ###  Intent
