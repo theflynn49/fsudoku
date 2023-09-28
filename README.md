@@ -11,10 +11,10 @@ It works with
 - VDP/MOS 1.04RC1/1.04RC1 (on AgonLight2 from Olimex)
 - VDP/MOS 1.04RC1/1.04RC2 (id)
 
-It doesn't work yet on 
+On these environments : 
 - the fab-agon-emulator from tomm 
-- VDP 1.04RC2 from tomm
-because problems with the color palettes of the new VDP. 
+- VDP 1.04RC2 
+You must enable the Legacy Modes with "VDU 23,0,&C1,1" because it uses the old modes the VDP. 
 
 ###  Intent
 
