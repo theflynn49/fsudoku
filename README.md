@@ -1,21 +1,16 @@
 
 # FSUDOKU
 
-Version 1.1RC2 2023/09
+Version 1.1 2023/09
 
 A simple game of Sudoku or alike for the AGON Light
 
 It works with 
 - the agon-light-emulator from astralaster, 
+- the fab-agon-emulator from tomm 
 - VDP/MOS 1.03/1.03 (on the emulator above)
 - VDP/MOS 1.04RC1/1.04RC1 (on AgonLight2 from Olimex)
-- VDP/MOS 1.04RC1/1.04RC2 (id)
-
-On these environments : 
-- the fab-agon-emulator from tomm 
-- VDP 1.04RC2
-
-You must enable the Legacy Modes with "VDU 23,0,&C1,1" because it uses the old modes the VDP. 
+- VDP/MOS 1.04RC2/1.04RC2 (uses legacy mode 1)
 
 ###  Intent
 

@@ -2,8 +2,8 @@
 #include <stdio.h>
 #include <string.h>
 
-#define TGT_VERSION " Version 1.1 2023/09   "
-#define VERSION     " Version 1.1RC2 23/09  "
+#define VERSION " Version 1.1 2023/09   "
+#define TGT_VERSION     " Version 1.1RC2 23/09  "
 
 extern int generate_puzzle() ;
 extern int solve(int findall, int savefirst, int limit) ;
@@ -324,9 +324,9 @@ void pr_error_type()
 	tab(bias_X+4*9+15, bias_Y+15);
 	color(menu_fg00, menu_bg00) ;
 	switch(error_type) {
-		case 0 : printf("None   ") ; break ;
-		case 1 : printf("Sudoku ") ; break ;
-		case 2 : printf("All    ") ; break ;
+		case 0 : printf("None  ") ; break ;
+		case 1 : printf("Sudoku") ; break ;
+		case 2 : printf("All   ") ; break ;
 	}
 }
 
@@ -805,6 +805,7 @@ int mainEditloop()
 		     break ;
 	  case 'p' :
 	  case 'P' : gener_in_process ^= 1 ;
+		     reset_constraints(1) ;  
 		     drawNotes(grid) ;
 		     break ;
 	  case 'l' :
@@ -904,7 +905,7 @@ int mainloop()
 	  case 'P' : if (notes_in==0) 
 		     { 
 		  	memcpy(notes, grid, sizeof(grid)) ;
-			reset_constraints(1) ;  // fallthrough
+			reset_constraints(1) ;  
 			notes_in=1 ;
 			printInfo("Hit P again to get your notes back") ; 
 		     } else {
@@ -1145,7 +1146,7 @@ int main(int argc, char *argv[])
     	srand(time(NULL)) ;
     	nb=100 ;
     	while(rand()<0x100) if (nb--<=0) break ;
-	printf("\x16\x01                    \n") ; // force mode 1
+	rst18l("\x17\x00\xC1\x01  \x16\x01                    \n", 27) ; // force legacy mode and mode 1
 	initCharSet() ;
 	translate_grid(grid0S, sol_grid) ;
 	translate_grid(grid0, grid) ;
@@ -1158,7 +1159,6 @@ int main(int argc, char *argv[])
 	while(mainMenu()) ;
 	
 	color(15,0x80) ;
-	printf("\x0c %uld\n", time(NULL) ) ;
-	printf(" %uld\n", time(NULL) ) ;
+	rst18l(" \x17\x00\xC1\x00  \x16\x01  \x0C\r\n", 14) ; // remove legacy mode and set mode 1
 	return 0 ;
 }
