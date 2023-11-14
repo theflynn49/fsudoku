@@ -9,8 +9,8 @@ It works with
 - the agon-light-emulator from astralaster, 
 - the fab-agon-emulator from tomm 
 - VDP/MOS 1.03/1.03 (on the emulator above)
-- VDP/MOS 1.04RC1/1.04RC1 (on AgonLight2 from Olimex)
-- VDP/MOS 1.04RC2/1.04RC2 (uses legacy mode 1)
+- VDP/MOS 1.04RC1 to RC3 (on AgonLight2 from Olimex)
+- VDP/MOS 1.04 (uses legacy mode 1)
 
 ###  Intent
 
@@ -21,7 +21,7 @@ So here is a dirty written-at-a-tube little thing which I guarantee contains not
 good programming practice, meaning expect ugly menues, a lot of ~~bugs~~ strange features, 
 and barely no comments in the code. 
 
-It is a text game (video mode 1), written in "C" using z88dk (https://z88dk.org) producing ADL=0 type code.
+It is a text game (legacy video mode 1), written in "C" using z88dk (https://z88dk.org) producing ADL=0 type code.
 You should use a recent "night build" version, greater than 2.2, to get Agon support 
 (Mine is a daily build dated 2023/08/08)
 
@@ -31,12 +31,12 @@ It supports Sudoku Classic, Aztec and Jigsaw types. 'Aztec' being a form of jigs
 which I find fun and easy to play. Jigsaw is a symmetric kind of jigsaw type.
 
 You can get puzzles from a small included library, ask Fsudoku to generate a random one for you,
-enter your own puzzle, ask Fsudoku to solve it for you and verify there is only one solution.
+enter your own puzzle, ask Fsudoku to solve it for you to check that there is only one single solution.
 
 Solving a puzzle you can enter notes (only one set infortunately) or ask Fsudoku to compute them
 for you.
 
-It show errors if you want, either errors against the sudoku rules, or any difference from the
+It shows errors if you want, either errors against the sudoku rules, or any difference from the
 puzzle solution. "Errors None" is the hard way to go unless it's cheating.
 
 I think Aztec is easy because it implies more constraints, for example if you name the cells
@@ -49,13 +49,17 @@ and the 3 other equivalent rules obtained by rotating symmetry
 ### Installation
 
 Drop the two files "fsudoku.bin" and "fsudoku.lib" somewhere on your Agon SDcard, and type :
-*load fsudoku.bin
-*run
-These files should be in the github "Release" folder.
+
+<code>
+ *load fsudoku.bin
+ *run
+</code>
+
+These files may be found in the github "Release" folder.
 
 A file "fsudoku.sav" may be generated if you save a self-edited game
 
-To recompile Fsudoku, look at the "build" file. I am too lazy to make a Makefile.
+To recompile Fsudoku, look at the "build" file. I am too lazy to write a Makefile.
 
 
 ### Main Menu
@@ -66,7 +70,7 @@ To recompile Fsudoku, look at the "build" file. I am too lazy to make a Makefile
      The difficulty level is somehow accurate for the library games, much less for the 
      generated ones, which in fact support only two level, the first from "easy to normal",
      and a more difficult one from "hard to hellish". The generator may take a LONG time
-     to generate a puzzle of the latter difficulty level.
+     (that is, minutes) to generate a puzzle of the latter difficulty level.
 
 -L : Choose a library game randomly, obfuscate it and go to the player Menu
 
@@ -102,14 +106,14 @@ left to place in the grid. (Usually, the smallest is the easiest to place)
 
 -Use the '1' to '9' keys to write a digit in a cell. Use '0' to erase a cell
 
--You ca enter "notes" in a cell by typing "Alt-1" to "Alt-9" ; AltGr works too. '0' erase the notes also.
+-You can enter "notes" in a cell by typing "Alt-1" to "Alt-9" ; AltGr works too. '0' erase the notes also.
 
 -You can use "BackSpace" to UNDO a move, helping backing track manually. "TAB" will REDO your moves.
- The memory for moves is limited to ithe last 40 moves, until z88dk supports ADL=1 code :D
+ The memory for moves is limited to the last 40 moves, until z88dk supports ADL=1 code ...
 
 -P will compute the notes for you, filling them with all the possible values for each cell, only
- regarding the sudoku rules. If you hit 'P' again, you'll get your notes back. modifying the 
- computed notes makes them into your personal notes.
+ in regard of the sudoku rules. If you hit 'P' again, you'll get your own notes back. modifying the 
+ computed notes makes them becoming your personal notes.
 
 -W changes the "W"arning level in case of errors. If "None" is selected, you will NOT be warned until
  the last digit is entered in the last free cell, making finding the error painful and cumbersome, but
